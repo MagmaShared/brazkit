@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:brazkit/src/services/response/ResponseStatus.dart';
-import 'package:brazkit/src/utils/networkkit.dart';
+import 'package:brazkit/services/response/ResponseStatus.dart';
+import 'package:brazkit/utils/networkkit.dart';
 import 'package:http/http.dart' as http;
 
 class DirtyService {

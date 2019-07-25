@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:brazkit/src/utils/prefskit.dart';
+import 'package:brazkit/utils/prefskit.dart';
 
 class ResponseUser {
   static const USER_PREFS = "user.prefs";
