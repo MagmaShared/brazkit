@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AppKit {
+class BrazAppKit {
 
   static const String ENVPATH = "assets/data/env.json";
 

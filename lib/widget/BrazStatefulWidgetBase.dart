@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class StatefulWidgetBase extends StatefulWidget {
+class BrazStatefulWidgetBase extends StatefulWidget {
   @override
-  _StatefulWidgetBaseState createState() => _StatefulWidgetBaseState();
+  _BrazStatefulWidgetBaseState createState() => _BrazStatefulWidgetBaseState();
 }
 
-class _StatefulWidgetBaseState extends State<StatefulWidgetBase> {
+class _BrazStatefulWidgetBaseState extends State<BrazStatefulWidgetBase> {
 
   void Function() _onLoad;
   set onLoad(Function() func){

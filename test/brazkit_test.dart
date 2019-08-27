@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:brazkit/brazkit.dart';
+import 'package:brazkit/BrazKit.dart';
 
 void main() {
   test('test brazkit', () {

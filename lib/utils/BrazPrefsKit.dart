@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // shared_preferences: ^0.4.2
-class PrefsKit {
+class BrazPrefsKit {
 
   static Future<bool> getBool(String key) async {
     var prefs = await SharedPreferences.getInstance();

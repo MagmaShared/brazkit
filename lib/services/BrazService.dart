@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:brazkit/services/response/ResponseStatus.dart';
-import 'package:brazkit/utils/networkkit.dart';
+import 'package:brazkit/utils/BrazNetworkKit.dart';
 import 'package:http/http.dart' as http;
 
-class DirtyService {
+class BrazService {
 
   static Future<ResponseStatus> post(url, {body, headers}) async {
 
@@ -15,9 +15,9 @@ class DirtyService {
   }
 
   static _checkConnectivity() async {
-    bool isConnected = await NetworkKit.isConnected();
+    bool isConnected = await BrazNetworkKit.isConnected();
     if (!isConnected){
-      //mostrar alerta
+      // todo abrir dialogo exibindo o erro
       throw 'Sem conexão com internet.';
     }
   }
@@ -26,14 +26,14 @@ class DirtyService {
     try {
       ResponseStatus rs;
       if (response.statusCode == 200) {
-        rs = ResponseStatus.fromJson(true, json.decode(response.body));
+        rs = ResponseStatus.fromJson(true, response.statusCode, json.decode(response.body));
       } else {
-        rs = ResponseStatus.fromJson(false, json.decode(response.body));
+        rs = ResponseStatus.fromJson(false, response.statusCode, json.decode(response.body));
       }
       return rs;
     } catch (error) {
-      ResponseStatus rs = ResponseStatus(false, messageError: error);
-      return rs;
+        ResponseStatus rs = ResponseStatus(success: false, statusCode: response.statusCode, messageError: error);
+        return rs;
       // todo abrir dialogo exibindo o erro
     }
   }

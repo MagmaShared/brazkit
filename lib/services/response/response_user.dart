@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:brazkit/utils/prefskit.dart';
+import 'package:brazkit/utils/BrazPrefsKit.dart';
 
 class ResponseUser {
   static const USER_PREFS = "user.prefs";
@@ -42,11 +42,11 @@ class ResponseUser {
 
   void save() {
     final map = {"name": name, "login": login, "email": email, "uid": uid, "displayName": displayName, "lastName": lastName, "photoUrl": photoUrl, "phoneNumber": phoneNumber};
-    PrefsKit.set(USER_PREFS, json.encode(map).toString());
+    BrazPrefsKit.set(USER_PREFS, json.encode(map).toString());
   }
 
   static Future<ResponseUser> get() async {
-    String s = await PrefsKit.getString(USER_PREFS);
+    String s = await BrazPrefsKit.getString(USER_PREFS);
     if (s == null || s.isEmpty) {
       return null;
     }
@@ -55,6 +55,6 @@ class ResponseUser {
   }
 
   static clear() {
-    PrefsKit.set(USER_PREFS, "");
+    BrazPrefsKit.set(USER_PREFS, "");
   }
 }

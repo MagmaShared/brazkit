@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class NetworkKit {
+class BrazNetworkKit {
 
   static StreamSubscription<dynamic> _subscription;
 

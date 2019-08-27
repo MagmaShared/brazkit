@@ -1,8 +1,11 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+
 class ResponseStatus<T> {
 
+  final int statusCode;
   final bool success;
   final String messageSuccess;
   final String messageError;
@@ -11,14 +14,15 @@ class ResponseStatus<T> {
 
   get message => _toMessage;
 
-  ResponseStatus(this.success, {this.messageSuccess, this.messageError, this.body, this.techError});
+  ResponseStatus({@required this.success, @required this.statusCode, this.messageSuccess, this.messageError, this.body, this.techError});
 
-  factory ResponseStatus.fromJson(bool success, Map<String, dynamic> data) {
+  factory ResponseStatus.fromJson(bool success, int statusCode, Map<String, dynamic> data) {
 
     if (data == null) return null;
 
     ResponseStatus responseStatus = ResponseStatus(
-      success,
+      success: success,
+      statusCode: statusCode,
       messageSuccess: data['messageSuccess'] as String,
       messageError: data['messageError'],
       techError: data['techError'],
@@ -29,6 +33,8 @@ class ResponseStatus<T> {
   }
 
   Map toJson() => {
+    "success": success.toString(),
+    "statusCode": statusCode.toString(),
     "messageSuccess": messageSuccess.toString(),
     "messageError": messageError.toString(),
     "techError": techError.toString(),

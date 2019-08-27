@@ -1,15 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-class AlertKit {
+class BrazAlertKit {
 
   static showSnackbar(ScaffoldState scaffoldState, String message, [MaterialColor materialColor, int duration = 3]) {
     if (message.isEmpty) return;
     // Find the Scaffold in the Widget tree and use it to show a SnackBar
 //    Scaffold.of(context).showSnackBar(
-
     scaffoldState.removeCurrentSnackBar();
-
     scaffoldState.showSnackBar(
         SnackBar(content: Text(message),
             backgroundColor: materialColor,

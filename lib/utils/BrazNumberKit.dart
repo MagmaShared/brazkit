@@ -1,6 +1,6 @@
 import 'dart:math';
 
-class NumberKit {
+class BrazNumberKit {
 
     /// Generates a positive random integer uniformly distributed on the range
     /// from [min], inclusive, to [max], exclusive.

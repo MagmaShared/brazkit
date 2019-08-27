@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DeviceKit {
+class BrazDeviceKit {
 
   static double getHalfScreenProportion(BuildContext context){
     var size = MediaQuery.of(context).size;

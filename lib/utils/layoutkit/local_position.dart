@@ -1,5 +1,5 @@
 
 /// TODO to implement
-class LocalPosition {
+class BrazLocalPosition {
 
 }

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
-class StringKit {
+class BrazStringKit {
 
   static bool isNotEmpty(String text){
     if (text?.isNotEmpty ?? false){

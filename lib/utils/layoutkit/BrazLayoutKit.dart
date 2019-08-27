@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-export 'global_position.dart';
+export 'BrazGlobalPosition.dart';
 
 /*
 * Use inside initState() before super.initState()
 * WidgetsBinding.instance.addPostFrameCallback(FrameCallback callback);
 * */
 
-class LayoutKit {
+class BrazLayoutKit {
 
   static Size getSize(GlobalKey key) {
     final RenderBox renderBox = key.currentContext.findRenderObject();
@@ -19,8 +19,8 @@ class LayoutKit {
   }
 
   static OffsetValues getGlobalOffsetValues(GlobalKey key){
-    Offset offset = LayoutKit.getGlobalPositionPoint(key);
-    Size size = LayoutKit.getSize(key);
+    Offset offset = BrazLayoutKit.getGlobalPositionPoint(key);
+    Size size = BrazLayoutKit.getSize(key);
     return OffsetValues(offset, size);
   }
 

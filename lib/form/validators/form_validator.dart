@@ -1,5 +1,5 @@
 
-class FormValidators {
+class BrazFormValidatorKit {
 
   static String validateEmail(String text) {
 

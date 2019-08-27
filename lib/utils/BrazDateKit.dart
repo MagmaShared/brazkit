@@ -1,4 +1,4 @@
-class DateKit {
+class BrazDateKit {
 
   static List<String> monthsNames = [
     "Janeiro",
