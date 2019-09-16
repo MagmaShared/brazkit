@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
+import 'package:brazkit/utils/BrazFileKit.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,14 +15,8 @@ class BrazAppKit {
   static bool isAndroid(String key) => Platform.isAndroid;
   static bool isIos(String key) => Platform.isIOS;
 
-
   static Future<String> getValueFromEnvJson(String key) async {
-    return loadJson(ENVPATH).then((map) => map[key]);
-  }
-
-  static Future<Map> loadJson(String filePath) async {
-    String jsonString = await rootBundle.loadString(filePath);
-    return json.decode(jsonString);
+    return BrazFileKit.loadJson(ENVPATH).then((map) => map[key]);
   }
 
   static launchURL(String url) async {
@@ -37,6 +31,10 @@ class BrazAppKit {
   static Future<PackageInfo> getAppInfo() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return packageInfo;
+  }
+
+  static void closeApp(){
+    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
   }
 
 }

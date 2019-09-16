@@ -21,6 +21,7 @@ class _BrazStatefulWidgetBaseState extends State<BrazStatefulWidgetBase> {
   void initState() {
     super.initState();
 
+//    validar necessidade
 //    executar uma função depois do método build() terminar?
 //    SchedulerBinding.instance.addPostFrameCallback((_) => this._onLoad());
   }

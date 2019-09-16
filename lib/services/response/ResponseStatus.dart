@@ -1,59 +1,75 @@
-
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
-
 class ResponseStatus<T> {
-
   final int statusCode;
   final bool success;
-  final String messageSuccess;
-  final String messageError;
-  final String techError;
-  final T body;
+  String messageSuccess;
+  String messageError;
+  String debugError;
+  T data;
+  T body;
 
   get message => _toMessage;
 
-  ResponseStatus({@required this.success, @required this.statusCode, this.messageSuccess, this.messageError, this.body, this.techError});
+  ResponseStatus(this.statusCode,
+      {this.success, this.messageError, this.messageSuccess, this.debugError});
 
-  factory ResponseStatus.fromJson(bool success, int statusCode, Map<String, dynamic> data) {
+  factory ResponseStatus.fromJson(int statusCode, dynamic data,
+      {bool success, String messageError}) {
+    bool isSuccess = success != null
+        ? success
+        : statusCode.toString().startsWith('2') ? true : false;
 
-    if (data == null) return null;
+    ResponseStatus responseStatus;
 
-    ResponseStatus responseStatus = ResponseStatus(
-      success: success,
-      statusCode: statusCode,
-      messageSuccess: data['messageSuccess'] as String,
-      messageError: data['messageError'],
-      techError: data['techError'],
-      body: data['data'],
-    );
+    if (data == null) {
+      responseStatus = ResponseStatus(statusCode, success: isSuccess);
+    } else {
+      try {
+        if ('List<dynamic>' == data.runtimeType.toString()) {
+          responseStatus = ResponseStatus<List<dynamic>>(statusCode, success: isSuccess);
+        } else if ('Map<String, dynamic>' == data.runtimeType.toString()) {
+          responseStatus = ResponseStatus<Map<String, dynamic>>(statusCode, success: isSuccess);
+          responseStatus.messageSuccess = data['messageSuccess'];
+          responseStatus.messageError = messageError ?? data['messageError'] as String;
+          responseStatus.debugError = data['debugError'] as String;
+          responseStatus.data = data['data'];
+        } else {
+          responseStatus = ResponseStatus<dynamic>(statusCode, success: isSuccess);
+          responseStatus.messageSuccess = data['messageSuccess'];
+          responseStatus.messageError = messageError ?? data['messageError'] as String;
+          responseStatus.debugError = data['debugError'] as String;
+          responseStatus.data = data['data'];
+        }
+      } catch (e) {
+        rethrow;
+      }
+    }
+
+    responseStatus.body = data;
 
     return responseStatus;
   }
 
   Map toJson() => {
-    "success": success.toString(),
-    "statusCode": statusCode.toString(),
-    "messageSuccess": messageSuccess.toString(),
-    "messageError": messageError.toString(),
-    "techError": techError.toString(),
-    "body": json.encode(body),
-  };
+        "success": success.toString(),
+        "statusCode": statusCode,
+        "messageSuccess": messageSuccess.toString(),
+        "messageError": messageError.toString(),
+        "debugError": debugError.toString(),
+        "data": json.encode(data),
+        "body": body,
+      };
 
-  String _toMessage(){
+  String _toMessage() {
     return success ? this.messageSuccess : this.messageError;
   }
 
   bool hasData() {
-    return this.body != null;
+    return this.data != null;
   }
 
-//fromMap
-
+  bool hasBody() {
+    return (this.body != null);
+  }
 }
-
-
-
-
-

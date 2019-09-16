@@ -1,6 +1,5 @@
-import 'package:device_id/device_id.dart';
+//import 'package:device_id/device_id.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_udid/flutter_udid.dart';
 
 class BrazDeviceKit {
 
@@ -12,11 +11,11 @@ class BrazDeviceKit {
     return itemWidth / itemHeight;
   }
 
-  static Future<String> getDeviceId() async {
-    return await FlutterUdid.udid;
-  }
+  // static Future<String> getDeviceId() async {
+    // return await FlutterUdid.udid;
+  // }
 
-  static Future<String> getImei() async {
-    return await DeviceId.getIMEI;
-  }
+//  static Future<String> getImei() async {
+//    return await DeviceId.getIMEI;
+//  }
 }
