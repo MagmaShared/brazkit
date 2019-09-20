@@ -5,6 +5,7 @@ import 'package:brazkit/utils/BrazFileKit.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 
 class BrazAppKit {
 
@@ -35,6 +36,12 @@ class BrazAppKit {
 
   static void closeApp(){
     SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+  }
+
+  static void debugPrint(String value){
+    if (!kReleaseMode) {
+      print(value);
+    }
   }
 
 }
