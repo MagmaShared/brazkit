@@ -1,29 +1,31 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class BrazColorKit {
 
-  static MaterialColor getDarker1(MaterialColor color) {
-    return color[100];
+  static Color getDarker1(MaterialColor color) {
+    return color.shade600;
   }
 
-  static MaterialColor getDarker2(MaterialColor color) {
-    return color[300];
+  static Color getDarker2(MaterialColor color) {
+    return color.shade700;
   }
 
-  static MaterialColor getDarker3(MaterialColor color) {
-    return color[500];
+  static Color getDarker3(MaterialColor color) {
+    return color.shade900;
   }
 
-  static MaterialColor getLighter1(MaterialColor color) {
-    return color[100];
+  static Color getLighter1(MaterialColor color) {
+    return color.shade200;
   }
 
-  static MaterialColor getLighter2(MaterialColor color) {
-    return color[300];
+  static Color getLighter2(MaterialColor color) {
+    return color.shade100;
   }
 
-  static MaterialColor getLighter3(MaterialColor color) {
-    return color[500];
+  static Color getLighter3(MaterialColor color) {
+    return color.shade50;
   }
 
   static Color colorStringToColor(String color) {
@@ -54,4 +56,9 @@ class BrazColorKit {
     return int.parse(hexColor, radix: 16);
   }
 
+  static Color getRandomColor() {
+    Random _random = Random();
+    return Color.fromARGB(255, _random.nextInt(256), _random.nextInt(256), _random.nextInt(256));
+  }
+  
 }
