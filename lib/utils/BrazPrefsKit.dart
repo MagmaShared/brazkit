@@ -37,7 +37,7 @@ class BrazPrefsKit {
 
   static Future<dynamic> get(String key) async {
     var prefs = await SharedPreferences.getInstance();
-    return prefs.get(key) ?? {};
+    return prefs.get(key) ?? null;
   }
 
   static Future<bool> set(String key, dynamic data) async {
@@ -64,6 +64,11 @@ class BrazPrefsKit {
       default:
         return false;
     }
+  }
+
+  static Future<bool> remove(String key) async {
+    var prefs = await SharedPreferences.getInstance();
+    return prefs.remove(key);
   }
 }
 
