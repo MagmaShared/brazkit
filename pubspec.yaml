@@ -14,11 +14,15 @@ dependencies:
   dio: ^1.0.14
   shared_preferences: ^0.4.2
   url_launcher: ^5.1.0
-  flutter_icons: ^0.1.4
   path_provider: ">=0.4.1"
   rxdart: ^0.22.0
   package_info: ^0.4.0+4  
   connectivity: ^0.4.4  
+
+  flutter_icons:
+    git:
+      url: git://github.com/MagmaShared/flutter-icons.git
+      ref: development
 
 dev_dependencies:
   flutter_test:

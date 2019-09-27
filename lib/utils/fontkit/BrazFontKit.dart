@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icon_data.dart';
-
+export 'package:flutter_icons/src/flutter_icon_data.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 export 'fontawesome_type.dart';
 export 'ionicons_type.dart';
 
@@ -10,10 +10,17 @@ class BrazFontKit {
     return FlutterIconData.fontAwesome(icon);
   }
 
+  static IconData fontAwesome5IconData(int icon, {IconWeight weight = IconWeight.Solid}) {
+    return FlutterIconData.fontAwesome5(icon, weight: weight);
+  }
+
   static IconData ionIconData(int icon) {
     return FlutterIconData.ionicons(icon);
   }
 
+  static IconData antDesign(int icon) {
+    return FlutterIconData.antDesign(icon);
+  }
 }
 
 enum BrazFontKitType {
