@@ -4,6 +4,7 @@ import 'package:brazkit/bloc/BlocBase.dart';
 Type _typeOf<T>() => T;
 
 class BrazBlocProvider<T extends BlocBase > extends StatefulWidget {
+
   BrazBlocProvider({
     Key key,
     @required this.child,

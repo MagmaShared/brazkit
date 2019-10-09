@@ -12,30 +12,29 @@ class ResponseStatus<T> {
   get message => _toMessage;
 
   ResponseStatus(this.statusCode,
-      {this.success, this.messageError, this.messageSuccess, this.debugError});
+      {this.success, this.messageError, this.messageSuccess, this.debugError, dynamic data});
 
-  factory ResponseStatus.fromJson(int statusCode, dynamic data,
-      {bool success, String messageError}) {
-    bool isSuccess = success != null
-        ? success
-        : statusCode.toString().startsWith('2') ? true : false;
+  factory ResponseStatus.fromJson(int statusCode, dynamic data, {bool success, String messageError}) {
+    // bool isSuccess = success != null
+    //     ? success
+    //     : statusCode.toString().startsWith('2') ? true : false;
 
     ResponseStatus responseStatus;
 
     if (data == null) {
-      responseStatus = ResponseStatus(statusCode, success: isSuccess);
+      responseStatus = ResponseStatus(statusCode, success: success ?? true);
     } else {
       try {
         if ('List<dynamic>' == data.runtimeType.toString()) {
-          responseStatus = ResponseStatus<List<dynamic>>(statusCode, success: isSuccess);
+          responseStatus = ResponseStatus<List<dynamic>>(statusCode, success: success ?? true);
         } else if ('Map<String, dynamic>' == data.runtimeType.toString()) {
-          responseStatus = ResponseStatus<Map<String, dynamic>>(statusCode, success: isSuccess);
+          responseStatus = ResponseStatus<Map<String, dynamic>>(statusCode, success: data['success'] != null ? data['success'] : true);
           responseStatus.messageSuccess = data['messageSuccess'];
           responseStatus.messageError = messageError ?? data['messageError'] as String;
           responseStatus.debugError = data['debugError'] as String;
           responseStatus.data = data['data'];
         } else {
-          responseStatus = ResponseStatus<dynamic>(statusCode, success: isSuccess);
+          responseStatus = ResponseStatus<dynamic>(statusCode, success: data['success'] != null ? data['success'] : true);
           responseStatus.messageSuccess = data['messageSuccess'];
           responseStatus.messageError = messageError ?? data['messageError'] as String;
           responseStatus.debugError = data['debugError'] as String;

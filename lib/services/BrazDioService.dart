@@ -14,7 +14,6 @@ class BrazDioService {
 
   static final BrazDioService _instance = BrazDioService._internal();
   BrazDioService._internal();
-//      :this.firebase = FirebaseService();
 
   factory BrazDioService() {
     return _instance;
@@ -27,11 +26,10 @@ class BrazDioService {
     return this;
   }
 
-  Future<ResponseStatus> get(String path) async {
-
+  Future<ResponseStatus> get(String path, {Map<String, dynamic> params}) async {
     Response response;
     try {
-      response = await dioInstance().get('$_endpoint$path');
+      response = await dioInstance().get('$_endpoint$path', data: params);
       return ResponseStatus.fromJson(response.statusCode, response.statusCode == 204 ? null : response.data);
     } catch (error, stacktrace) {
       _print("Exception occured: $error stackTrace: $stacktrace");
@@ -40,9 +38,7 @@ class BrazDioService {
   }
 
   Future<ResponseStatus> post(String path, {Map<String, dynamic> params}) async {
-    
     Response response;
-
     try {
       if (params != null) jsonEncode(params);
     } catch (e) {
@@ -57,6 +53,20 @@ class BrazDioService {
     } catch (error, stacktrace) {
       _print("Exception occured: $error stackTrace: $stacktrace");
       return ResponseStatus(response?.statusCode ?? 500, messageError: _handleError(error), success: false);
+    }
+  }
+  
+  Future<ResponseStatus> postFile(String path, FormData formData) async {
+    Response response;
+    try {
+      Dio d = dioInstance();
+      d.options.contentType=ContentType.parse("multipart/form-data");
+      response = await d.post('$_endpoint$path', data: formData);
+      return ResponseStatus.fromJson(response.statusCode, response.data);
+    } catch (error, stacktrace) {
+      print(response);
+      _print("Exception occured --> $error stackTrace: $stacktrace");
+      return ResponseStatus(response?.statusCode ?? 500, messageError: _handleError(error), debugError: response.toString(), success: false);
     }
   }
 
@@ -109,6 +119,7 @@ class BrazDioService {
   }
   String _handleError(Error error) {
     String errorDescription = "";
+    if (error == null) return 'Undefined Error.';
     if (error is DioError) {
       switch (error.type) {
         case DioErrorType.CANCEL:
@@ -124,7 +135,7 @@ class BrazDioService {
           errorDescription = "Tempo de resposta com a API esgotado.";
           break;
         case DioErrorType.RESPONSE:
-          errorDescription = "Recebeu código inválido: ${error.response.statusCode}";
+          errorDescription = "Código de Status de Erro: ${error.response.statusCode}";
           break;
       }
     } else {

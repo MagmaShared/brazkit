@@ -18,7 +18,7 @@ library brazkit;
 //export 'package:brazkit/src/utils/prefskit.dart';
 //export 'package:brazkit/src/utils/stringkit.dart';
 //export 'package:brazkit/src/utils/widgetkit.dart';
-//export 'package:brazkit/src/widget/StatefulWidgetBase.dart';
+// export 'package:brazkit/widget/BrazBlocProvider.dart';
 
 class BrazKit {
   void print(String text){print(text);}

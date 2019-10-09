@@ -15,6 +15,48 @@ class BrazAlertKit {
     );
   }
 
+  static Future<void> showConfirmDialog(BuildContext context,
+      String message,
+      {
+        String title = "Mensagem",
+        String buttonOkText = "OK",
+        String buttonCancelText = "CANCELAR",
+        VoidCallback callbackOk,
+        VoidCallback callbackCancel,
+        bool dismissible = true
+      }) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: dismissible, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[Text(message)],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(buttonCancelText),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (callbackCancel != null) callbackCancel();
+              },
+            ),
+            FlatButton(
+              child: Text(buttonOkText),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (callbackOk != null) callbackOk();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   static Future<void> showAlertDialog(BuildContext context,
       String message,
       {
