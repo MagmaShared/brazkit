@@ -11,11 +11,6 @@ class BrazAppKit {
 
   static const String ENVPATH = "assets/data/env.json";
 
-  // enviroments
-  static String getEnviroment(String key) => Platform.environment[key];
-  static bool isAndroid(String key) => Platform.isAndroid;
-  static bool isIos(String key) => Platform.isIOS;
-
   static Future<String> getValueFromEnvJson(String key) async {
     return BrazFileKit.loadJson(ENVPATH).then((map) => map[key]);
   }
@@ -29,9 +24,14 @@ class BrazAppKit {
     }
   }
 
-  static Future<PackageInfo> getAppInfo() async {
+  static Future<AppInfo> getAppInfo() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    return packageInfo;
+    return AppInfo(
+      packageInfo.appName,
+      packageInfo.buildNumber,
+      packageInfo.version,
+      packageInfo.packageName
+    );
   }
 
   static void closeApp(){
@@ -44,4 +44,16 @@ class BrazAppKit {
     }
   }
 
+}
+
+class AppInfo {
+  final appName;
+  final buildNumber;
+  final version;
+  final packageName;
+  AppInfo(this.appName, this.buildNumber, this.version, this.packageName);
+
+  String toString(){
+    return 'AppName: $appName, BuildNumber: $buildNumber, Version: $version, PackageName: $packageName';
+  }
 }

@@ -19,10 +19,10 @@ class BrazDioService {
     return _instance;
   }
 
-  BrazDioService config(endpoint, {debugMode = false, receiveTimeout = 5000, connectTimeout = 5000 }) {
+  BrazDioService config(endpoint, {debugMode = false, receiveTimeout = 5000, connectTimeout = 5000, Map<String, dynamic> headers}) {
     this._endpoint = endpoint;
     this.debugMode = debugMode;
-    this._dioOptions = Options(receiveTimeout: this.receiveTimeout, connectTimeout: this.connectTimeout);
+    this._dioOptions = Options(receiveTimeout: this.receiveTimeout, connectTimeout: this.connectTimeout, headers: headers);
     return this;
   }
 
@@ -52,7 +52,7 @@ class BrazDioService {
       return ResponseStatus.fromJson(response.statusCode, response.statusCode == 204 ? null : response.data);
     } catch (error, stacktrace) {
       _print("Exception occured: $error stackTrace: $stacktrace");
-      return ResponseStatus(response?.statusCode ?? 500, messageError: _handleError(error), success: false);
+      return ResponseStatus(response?.statusCode ?? 500,  debugError: stacktrace.toString(), messageError: _handleError(error), success: false);
     }
   }
   
@@ -64,7 +64,6 @@ class BrazDioService {
       response = await d.post('$_endpoint$path', data: formData);
       return ResponseStatus.fromJson(response.statusCode, response.data);
     } catch (error, stacktrace) {
-      print(response);
       _print("Exception occured --> $error stackTrace: $stacktrace");
       return ResponseStatus(response?.statusCode ?? 500, messageError: _handleError(error), debugError: response.toString(), success: false);
     }
@@ -135,7 +134,7 @@ class BrazDioService {
           errorDescription = "Tempo de resposta com a API esgotado.";
           break;
         case DioErrorType.RESPONSE:
-          errorDescription = "Código de Status de Erro: ${error.response.statusCode}";
+          errorDescription = "Erro ${error.response.statusCode}: ${error.message}";
           break;
       }
     } else {
