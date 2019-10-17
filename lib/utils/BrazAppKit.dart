@@ -15,6 +15,8 @@ class BrazAppKit {
     return BrazFileKit.loadJson(ENVPATH).then((map) => map[key]);
   }
 
+  /// To be removed, use [BrazNetworKit] instead
+  @Deprecated('It was moved to BrazNetworKit')
   static launchURL(String url) async {
     if (url.isEmpty) return;
     if (await canLaunch(url)) {
