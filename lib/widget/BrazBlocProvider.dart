@@ -72,4 +72,4 @@ class _BrazBlocProviderInherited<T> extends InheritedWidget {
 // )
 
 // Pode ser utilizado em Child1() e Child2()
-// BrazBlocProvider.of(context);
+// BrazBlocProvider.of<tipo>(context);
