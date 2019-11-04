@@ -1,0 +1,4 @@
+class BrazArrayKit {
+
+  // static isEmpty
+}

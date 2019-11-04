@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class BrazNavKit {
 
@@ -11,7 +12,9 @@ class BrazNavKit {
   BrazNavKit._internal();
 
   static dynamic push(BuildContext context, Widget page) async {
-    return await Navigator.push(context, MaterialPageRoute(builder : (context) => page ));
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      return await Navigator.push(context, MaterialPageRoute(builder : (context) => page ));
+    });
   }
 
   static dynamic pushReplacement(BuildContext context, Widget page) async {

@@ -17,6 +17,7 @@ class BrazStringKit {
   }
 
   static bool isNegativeUntype(dynamic obj){
+    if (obj.runtimeType.toString() == 'String') (obj as String).trim().toString();
     return ["", null, false, 0].contains(obj);
   }
 
