@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:alice/alice.dart';
 import 'package:brazkit/services/response/ResponseStatus.dart';
 import 'package:dio/dio.dart';
 
@@ -10,8 +11,9 @@ class BrazDioService {
   int receiveTimeout;
   int connectTimeout;
   String _endpoint;
-  Options _dioOptions;
+  BaseOptions _dioOptions;
   String _currentPath;
+  Alice _alice;
 
   static final BrazDioService _instance = BrazDioService._internal();
   BrazDioService._internal();
@@ -20,10 +22,14 @@ class BrazDioService {
     return _instance;
   }
 
+  void setAliceInstance(Alice alice){
+    this._alice = alice;
+  }
+
   BrazDioService config(endpoint, {debugMode = false, receiveTimeout = 5000, connectTimeout = 5000, Map<String, dynamic> headers}) {
     this._endpoint = endpoint;
     this.debugMode = debugMode;
-    this._dioOptions = Options(receiveTimeout: this.receiveTimeout, connectTimeout: this.connectTimeout, headers: headers);
+    this._dioOptions = BaseOptions(receiveTimeout: this.receiveTimeout, connectTimeout: this.connectTimeout, headers: headers);
     return this;
   }
 
@@ -33,7 +39,7 @@ class BrazDioService {
 
     Response response;
     try {
-      response = await dioInstance().get('$_endpoint$path', data: params);
+      response = await dioInstance().get('$_endpoint$path', queryParameters: params);
       return ResponseStatus.fromJson(response.statusCode, response.statusCode == 204 ? null : response.data);
     } catch (error, stacktrace) {
       _print("Exception occured: $error stackTrace: $stacktrace");
@@ -54,7 +60,7 @@ class BrazDioService {
 
     try {
       Dio d = dioInstance();
-      d.options.contentType=ContentType.parse("application/json");
+      d.options.contentType = Headers.jsonContentType; //ContentType.parse("application/json");
       response = await d.post('$_endpoint$path', data: params);
       return ResponseStatus.fromJson(response.statusCode, response.statusCode == 204 ? null : response.data);
     } catch (error, stacktrace) {
@@ -70,7 +76,7 @@ class BrazDioService {
     Response response;
     try {
       Dio d = dioInstance();
-      d.options.contentType=ContentType.parse("multipart/form-data");
+      d.options.contentType = ContentType.parse("multipart/form-data").toString();
       response = await d.post('$_endpoint$path', data: formData);
       return ResponseStatus.fromJson(response.statusCode, response.data);
     } catch (error, stacktrace) {
@@ -81,30 +87,32 @@ class BrazDioService {
 
   Dio dioInstance(){
     Dio dio = Dio(this._dioOptions);
+    
+    dio.interceptors.clear();
     this._setupInterceptors(dio);
+    if (debugMode)
+      if (this._alice != null) dio.interceptors.add(this._alice.getDioInterceptor());
+
     return dio;
   }
 
   void _setupInterceptors(Dio dio) {
-    _onRequest(dio);
-    _onResponse(dio);
-  }
-  _onRequest(Dio dio) {
-    this._logRequest(dio.options);
-    dio.interceptor.request.onSend = (Options options) async {
-      // todo implementar logica de token
-//      Response response = await dio.get("/token");
-//      options.headers["token"] = response.data["data"]["token"];
-      return options; //continue
-    };
-  }
-  _onResponse(Dio dio){
-    dio.interceptor.response.onSuccess = (Response response) {
-      _logResponse(dio.options, response);
-    };
+    
+    // ON REQUEST and RESPONSE
+    dio.interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options) {
+        this._logRequest(dio.options);
+        return options;
+        },
+      onResponse:(Response response) {
+          _logResponse(dio.options, response);
+          return response; // continue
+        }
+      )
+    );
+
   }
 
-  void _logRequest(Options options) {
+  void _logRequest(BaseOptions options) {
     if (this.debugMode) {
       _print("--> REQUEST BASE URL: ${this._endpoint} ");
       _print("--> METHOD AND PATH: ${this._currentPath} ");
@@ -112,7 +120,7 @@ class BrazDioService {
     }
   }
 
-  void _logResponse(Options options, Response response){
+  void _logResponse(BaseOptions options, Response response){
     int maxCharactersPerLine = 800;
     _print("<-- STATUS_CODE: ${response.statusCode} ${response.request.method} ${response.request.path}");
     String responseAsString = response.data.toString();
@@ -123,14 +131,16 @@ class BrazDioService {
     }
     _print("<-- END HTTP");
   }
+
   void _print(Object object){
     if (this.debugMode ?? false) print(object);
   }
-  String _handleError(Error error) {
+
+  String _handleError(DioError dioError) {
     String errorDescription = "";
-    if (error == null) return 'Undefined Error.';
-    if (error is DioError) {
-      switch (error.type) {
+    if (dioError == null) return 'Undefined Error.';
+    if (dioError is DioError) {
+      switch (dioError.error) {
         case DioErrorType.CANCEL:
           errorDescription = "Requisição para API foi cancelada.";
           break;
@@ -144,7 +154,7 @@ class BrazDioService {
           errorDescription = "Tempo de resposta com a API esgotado.";
           break;
         case DioErrorType.RESPONSE:
-          errorDescription = "Erro ${error.response.statusCode}: ${error.message}";
+          errorDescription = "Erro ${dioError.response.statusCode}: ${dioError.message}";
           break;
       }
     } else {
