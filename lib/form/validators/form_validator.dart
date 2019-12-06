@@ -20,6 +20,18 @@ class BrazFormValidatorKit {
     return null;
   }
 
+  static String validateAlphaNumeric(String text, {int maxLength = 9999, int minLength = 0}) {
+
+    if (text.isEmpty) return "Este campo é obrigatório";
+    if (text.length > maxLength) return "Este campo aceita no máximo $maxLength caracteres";
+    if (text.length < minLength) return "Este campo aceita no mínimo $minLength caracteres";
+
+    final validCharacters = RegExp(r'^[a-zA-Z0-9]+$');
+    if (!validCharacters.hasMatch(text)) return 'Caracteres inválidos, use apenas letras ou números';
+
+    return null;
+  }
+
   static String validateName(String text) {
     if (text.isEmpty) return "Informe o nome";
     return null;

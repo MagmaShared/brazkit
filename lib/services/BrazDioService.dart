@@ -11,6 +11,7 @@ class BrazDioService {
   int connectTimeout;
   String _endpoint;
   Options _dioOptions;
+  String _currentPath;
 
   static final BrazDioService _instance = BrazDioService._internal();
   BrazDioService._internal();
@@ -27,6 +28,9 @@ class BrazDioService {
   }
 
   Future<ResponseStatus> get(String path, {Map<String, dynamic> params}) async {
+
+    this._currentPath = 'GET: ${path}';
+
     Response response;
     try {
       response = await dioInstance().get('$_endpoint$path', data: params);
@@ -38,6 +42,9 @@ class BrazDioService {
   }
 
   Future<ResponseStatus> post(String path, {Map<String, dynamic> params}) async {
+    
+    this._currentPath = 'POST: ${path}';
+
     Response response;
     try {
       if (params != null) jsonEncode(params);
@@ -57,6 +64,9 @@ class BrazDioService {
   }
   
   Future<ResponseStatus> postFile(String path, FormData formData) async {
+    
+    this._currentPath = 'POST_FILE: ${path}';
+    
     Response response;
     try {
       Dio d = dioInstance();
@@ -96,9 +106,9 @@ class BrazDioService {
 
   void _logRequest(Options options) {
     if (this.debugMode) {
-      _print("--> REQUEST HTTP");
-      _print("--> Method: ${options.method} Path: ${options.path}");
-      _print("--> Content type: ${options.contentType}");
+      _print("--> REQUEST BASE URL: ${this._endpoint} ");
+      _print("--> METHOD AND PATH: ${this._currentPath} ");
+      _print("--> HEADERS: ${options.headers.toString()}");
     }
   }
 
