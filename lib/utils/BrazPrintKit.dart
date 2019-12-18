@@ -1,14 +1,25 @@
+import 'dart:io';
+
 class BrazPrintKit {
 
   static error(Object text){
+    /// iOS VSCode incompatibility
+    if (Platform.isIOS) return print('[ERROR]: ' + text);
+
     print('\x1B[31m[ERROR]\x1B[0m $text');
   }
 
   static customColor(String text, int color256){
+    /// iOS VSCode incompatibility
+    if (Platform.isIOS) return print(text);
+
     print('\u001b[38;5;${color256}m$text');
   }
 
   static log(String text, {BrazPrintColor color, int backgroundColor256}){
+
+    /// iOS VSCode incompatibility
+    if (Platform.isIOS) return print('[LOG]: ' + text);
 
     if (backgroundColor256 != null) return print('\u001b[41m[LOG] ${text.toUpperCase()}');
 
@@ -17,10 +28,16 @@ class BrazPrintKit {
   }
 
   static warn(Object text){
+    /// iOS VSCode incompatibility
+    if (Platform.isIOS) return print('[WARN]: ' + text);
+
     print('\x1B[93m[WARN]\x1B[0m $text');
   }
 
   static debug(Object text){
+    /// iOS VSCode incompatibility
+    if (Platform.isIOS) return print('[DEBUG]: ' + text);
+
     print('\x1B[94m[DEBUG]\x1B[0m $text');
   }
 

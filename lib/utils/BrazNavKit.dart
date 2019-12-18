@@ -13,12 +13,30 @@ class BrazNavKit {
 
   static dynamic push(BuildContext context, Widget page) async {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      return await Navigator.push(context, MaterialPageRoute(builder : (context) => page ));
+      return await Navigator.push(
+        context, 
+        MaterialPageRoute(builder : (context) => page , settings: RouteSettings(name: page.toString())));
     });
   }
 
   static dynamic pushReplacement(BuildContext context, Widget page) async {
     return await Navigator.pushReplacement(context, MaterialPageRoute(builder : (context) => page ));
+  }
+
+  static dynamic pushAndRemoveUntil(BuildContext context, Widget page){
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => page),
+      ModalRoute.withName('/'),
+    );
+  }
+
+  static dynamic popUntil(BuildContext context, RoutePredicate predicate){
+
+    Future.delayed(Duration.zero, () {
+      Navigator.of(context).popUntil(predicate);
+    });
+
+    // Navigator.popUntil(context, predicate);
   }
 
   static void pop(BuildContext context){
