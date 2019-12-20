@@ -7,7 +7,7 @@ class ResponseStatus<T> {
   String messageError;
   String debugError;
   T data;
-  T body;
+  String body;
 
   get message => _toMessage;
 
@@ -45,7 +45,9 @@ class ResponseStatus<T> {
       }
     }
 
-    responseStatus.body = data;
+    try {
+      responseStatus.body = json.encode(data);      
+    } catch (e) {}
 
     return responseStatus;
   }
@@ -69,6 +71,6 @@ class ResponseStatus<T> {
   }
 
   bool hasBody() {
-    return (this.body != null);
+    return (this.body != null && this.body.isNotEmpty);
   }
 }
