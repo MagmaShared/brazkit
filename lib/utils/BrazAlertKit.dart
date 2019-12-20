@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'package:brazkit/utils/fontkit/BrazFontKit.dart';
-import 'package:brazkit/utils/fontkit/fontawesome5_type.dart';
 import 'package:flutter/material.dart';
 
 class BrazAlertKit {
+
   static showSnackbar(ScaffoldState scaffoldState, String message,
       [MaterialColor materialColor, int duration = 3]) {
     if (message.isEmpty) return;
@@ -14,6 +13,27 @@ class BrazAlertKit {
         content: Text(message),
         backgroundColor: materialColor,
         duration: Duration(seconds: duration)));
+  }
+
+  static showSnackbarLoading(BuildContext context, {int seconds = 90, Color backgroundColor, String message}){
+
+    Scaffold.of(context).removeCurrentSnackBar();
+    Scaffold.of(context).showSnackBar(
+
+      SnackBar(
+        content: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: new CircularProgressIndicator(),
+            ),
+            new Text("  Aguarde...")
+          ],
+        ),
+        backgroundColor: backgroundColor,
+        duration: Duration(seconds: seconds))
+
+    );
   }
 
   static Future<bool> showConfirmDialog(BuildContext context, String message,
@@ -78,6 +98,18 @@ class BrazAlertKit {
               },
             ),
           ],
+        );
+      },
+    );
+  }
+
+  static Future<void> showGenericLoader(BuildContext context, {bool dismissible = false,  Widget child}) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: dismissible, // user must tap button!
+      builder: (BuildContext context) {
+        return Center(
+          child: child ?? CircularProgressIndicator(),
         );
       },
     );
