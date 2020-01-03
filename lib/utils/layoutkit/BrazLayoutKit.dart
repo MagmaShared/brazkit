@@ -9,7 +9,7 @@ export 'BrazGlobalPosition.dart';
 class BrazLayoutKit {
 
   static Size getSize(GlobalKey key) {
-    final RenderBox renderBox = key.currentContext.findRenderObject();
+    final RenderBox renderBox = key?.currentContext?.findRenderObject();
     return renderBox?.size;
   }
 

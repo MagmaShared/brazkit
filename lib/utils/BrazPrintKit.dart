@@ -66,6 +66,29 @@ class BrazPrintKit {
     }
   }
 
+  static void prettyPrintList(Iterable iter) {
+    if (iter == null) return;
+
+    final buff = StringBuffer();
+    var isFirst = true;
+
+    buff.write('[');
+
+    for (final val in iter) {
+      if (!isFirst) buff.write(', ');
+      isFirst = false;
+      if (val is String) {
+        buff.write('"$val"');
+      } else {
+        buff.write(val.toString());
+      }
+    }
+
+    buff.write(']');
+
+    print(buff.toString());
+  }
+
 }
 
 enum BrazPrintColor {

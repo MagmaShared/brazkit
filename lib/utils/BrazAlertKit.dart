@@ -145,6 +145,21 @@ class BrazAlertKit {
         });
   }
 
+  static void showSimpleBottomSheetWidget(BuildContext context, Widget widget) {
+   
+    showModalBottomSheet(
+       shape: RoundedRectangleBorder(
+          borderRadius: new BorderRadius.only(
+            topLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0)
+          )
+        ),
+        context: context,
+        builder: (context) {
+          return widget;
+        });
+  }
+
   static void showModalBottomSheetScafold(BuildContext context, Widget child,
       {String title = ''}) {
     showModalBottomSheet(
