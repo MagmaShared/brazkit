@@ -14,6 +14,7 @@ class BrazDioService {
   BaseOptions _dioOptions;
   String _currentPath;
   Alice _alice;
+  bool Function(int) _validateStatus = (status) {return true;};
 
   static final BrazDioService _instance = BrazDioService._internal();
   BrazDioService._internal();
@@ -30,7 +31,13 @@ class BrazDioService {
     this._endpoint = endpoint;
     this.debugMode = debugMode;
     this._dioOptions = BaseOptions(receiveTimeout: this.receiveTimeout, connectTimeout: this.connectTimeout, headers: headers);
+    dioInstance().options.validateStatus = this._validateStatus;
     return this;
+  }
+
+  void set validateStatus(bool Function(int) vstatus){
+    this._validateStatus = vstatus;
+    dioInstance().options.validateStatus = this._validateStatus;
   }
 
   Future<ResponseStatus> get(String path, {Map<String, dynamic> params}) async {
@@ -39,7 +46,8 @@ class BrazDioService {
 
     Response response;
     try {
-      response = await dioInstance().get('$_endpoint$path', queryParameters: params);
+      Dio d = dioInstance();
+      response = await d.get('$_endpoint$path', queryParameters: params);
       return ResponseStatus.fromJson(response.statusCode, response.statusCode == 204 ? null : response.data);
     } catch (error, stacktrace) {
       _print("Exception occured: $error stackTrace: $stacktrace");
