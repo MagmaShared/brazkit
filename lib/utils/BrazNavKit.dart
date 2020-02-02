@@ -43,10 +43,14 @@ class BrazNavKit {
     Navigator.pop(context);
   }
 
+  /// To be removed, use [this.pushNamed]
+  @Deprecated('To be removed.')
   Future<dynamic> route(String routeName) {
     return navigatorKey.currentState.pushNamed(routeName);
   }
 
+  /// To be removed, use [this.pushNamed]
+  @Deprecated('To be removed.')
   Future<dynamic> routeWithParams(String routeName, {dynamic arguments}) {
     return navigatorKey.currentState.pushNamed(routeName, arguments: arguments);
   }
