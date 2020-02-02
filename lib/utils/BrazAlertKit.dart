@@ -76,7 +76,7 @@ class BrazAlertKit {
   }
 
   static Future<void> showAlertDialog(BuildContext context, String message,
-      {String title = "Mensagem",
+      {String title,
       String buttonText = "OK",
       bool dismissible = true}) async {
     return showDialog<void>(
@@ -84,7 +84,7 @@ class BrazAlertKit {
       barrierDismissible: dismissible, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title),
+          title: title != null ? Text(title) : null,
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[Text(message)],
