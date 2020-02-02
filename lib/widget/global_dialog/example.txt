@@ -1,0 +1,37 @@
+Future doThings() async {
+    print('dialog called');
+    var dialogResult = await GlobalDialogService.showDialog(
+        title: 'Custom Title',
+        description: 'Custom Description',
+    );
+    if (dialogResult.confirmed) {
+        print('User has confirmed');
+    }
+}
+
+use that way
+Widget build(BuildContext context) {
+    return GlobalDialogWidget(
+          child: MaterialApp(
+        title: 'Dialog Widget Setup',
+        home: HomeView(),
+      ),
+    );
+}
+
+or
+
+@override
+Widget build(BuildContext context) {
+    return MaterialApp(
+        builder: (context, widget) => Navigator(
+        onGenerateRoute: (settings) => MaterialPageRoute(
+            builder: (context) => GlobalDialogWidget(
+                child: widget,
+            ),
+        ),
+        ),
+        title: 'Dialog Widget Setup',
+        home: HomeView(),
+    );
+}

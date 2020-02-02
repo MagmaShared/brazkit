@@ -76,9 +76,12 @@ class BrazAlertKit {
   }
 
   static Future<void> showAlertDialog(BuildContext context, String message,
-      {String title,
+    {
+      String title,
       String buttonText = "OK",
-      bool dismissible = true}) async {
+      bool dismissible = true,
+      VoidCallback callback
+    }) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: dismissible, // user must tap button!
@@ -94,6 +97,7 @@ class BrazAlertKit {
             FlatButton(
               child: Text(buttonText),
               onPressed: () {
+                if (callback != null) callback();
                 Navigator.of(context).pop();
               },
             ),
