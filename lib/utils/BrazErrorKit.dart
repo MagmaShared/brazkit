@@ -30,10 +30,11 @@ class BrazErrorKit {
 /// }
 class BrazException implements Exception {
   final Object _e;
-  BrazException([this._e]);
+  final String titleMessage;
+  BrazException([this._e, this.titleMessage = "Ocorreu um erro:"]);
 
   @override
   String toString() {
-    return '${_e.toString() ?? "UNDEFINED"}';
+    return '${_e.toString() ?? "Erro desconhecido."}';
   }
 }
