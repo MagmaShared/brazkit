@@ -73,4 +73,9 @@ class ResponseStatus<T> {
   bool hasBody() {
     return (this.body != null && this.body.isNotEmpty);
   }
+
+  @override
+  toString(){
+    return this.body.toString();
+  }
 }
