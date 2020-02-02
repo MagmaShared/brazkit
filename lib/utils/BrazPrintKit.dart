@@ -89,6 +89,11 @@ class BrazPrintKit {
     print(buff.toString());
   }
 
+  static void printWithoutWrap(String value){
+    final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
+    pattern.allMatches(value).forEach((match) => print(match.group(0)));
+  }
+
 }
 
 enum BrazPrintColor {
