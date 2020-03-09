@@ -144,7 +144,10 @@ class BrazDioService {
     if (this.debugMode ?? false) print(object);
   }
 
-  String _handleError(DioError dioError) {
+  String _handleError(dynamic dioError) {
+
+    if (dioError is String) return dioError;
+    
     String errorDescription = "";
     if (dioError == null) return 'Undefined Error.';
     if (dioError is DioError) {

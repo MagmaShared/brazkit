@@ -63,8 +63,8 @@ class BrazNavKit {
     return navigatorKey.currentState.pushReplacementNamed(routeName, arguments: arguments);
   }
 
-  bool backRoute() {
-    return navigatorKey.currentState.pop();
+  void backRoute() {
+    navigatorKey.currentState.pop();
   }
 }
 
