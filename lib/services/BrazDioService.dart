@@ -55,7 +55,7 @@ class BrazDioService {
     }
   }
 
-  Future<ResponseStatus> post(String path, {Map<String, dynamic> params}) async {
+  Future<ResponseStatus> post(String path, {Map<String, dynamic> params, String paramsString}) async {
     
     this._currentPath = 'POST: ${path}';
 
@@ -69,9 +69,15 @@ class BrazDioService {
     try {
       Dio d = dioInstance();
       d.options.contentType = Headers.jsonContentType; //ContentType.parse("application/json");
-      response = await d.post('$_endpoint$path', data: params);
+      response = await d.post('$_endpoint$path', data: paramsString ?? params);
       return ResponseStatus.fromJson(response.statusCode, response.statusCode == 204 ? null : response.data);
-    } catch (error, stacktrace) {
+    } on SocketException {
+      rethrow;
+    } 
+    catch (error, stacktrace) {
+        
+      if ((error as DioError).error.runtimeType == SocketException) rethrow;
+      
       _print("Exception occured: $error stackTrace: $stacktrace");
       return ResponseStatus(response?.statusCode ?? 500,  debugError: stacktrace.toString(), messageError: _handleError(error), success: false);
     }
