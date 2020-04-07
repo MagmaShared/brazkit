@@ -258,7 +258,7 @@ class BrazAlertKit {
         });
   }
 
-  static Future<bool> isOk(BuildContext context, String title) async {
+  static Future<bool> isOk(BuildContext context, String title, {String cancelText, String confirmText}) async {
     return showDialog<bool>(
         context: context,
         builder: (context) {
@@ -266,13 +266,13 @@ class BrazAlertKit {
             title: Text(title),
             actions: <Widget>[
               new FlatButton(
-                child: new Text('CANCEL'),
+                child: new Text(cancelText ?? 'CANCEL', style: TextStyle(fontWeight: FontWeight.bold),),
                 onPressed: () {
                   Navigator.of(context).pop(false);
                 },
               ),
               new FlatButton(
-                child: new Text('OK'),
+                child: new Text(confirmText ?? 'OK', style: TextStyle(fontWeight: FontWeight.bold)),
                 onPressed: () {
                   Navigator.of(context).pop(true);
                 },
