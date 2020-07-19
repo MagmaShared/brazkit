@@ -14,9 +14,9 @@ dependencies:
   alice: ^0.0.18
   dio: ^3.0.3
   # shared_preferences: ^0.4.2
-  shared_preferences: ^0.5.6+3
+  shared_preferences: ^0.5.0
   url_launcher: ^5.1.0
-  path_provider: ">=0.4.1"
+  path_provider: "^1.5.1"
   rxdart: ^0.22.0
   package_info: ^0.4.0+4  
   connectivity: ^0.4.5+3  
